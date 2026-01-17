@@ -4,12 +4,11 @@ public abstract class Person {
     private String id;
     private String name;
     private int age;
-    public int test;
 
     public Person(String id, int age, String name) {
-        this.id = id;
-        this.age = age;
-        this.name = name;
+        setId(id);
+        setAge(age);
+        setName(name);
     }
 
     public String getId() {
@@ -33,6 +32,9 @@ public abstract class Person {
     }
 
     public void setAge(int age) {
+        if(age < 0) {
+            throw new IllegalArgumentException("年龄不能为负数");
+        }
         this.age = age;
     }
 }

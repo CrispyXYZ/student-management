@@ -9,7 +9,7 @@ public class Student extends Person implements Detail {
 
     public Student(String id, int age, String name, String major) {
         super(id, age, name);
-        this.major = major;
+        setMajor(major);
     }
 
     public String getMajor() {
