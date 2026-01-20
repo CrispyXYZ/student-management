@@ -25,19 +25,19 @@ public class ScoreManager {
 
     public static CourseStat getCourseStat(List<Student> students, String courseName) {
         int studentNum = students.size();
-        int scoreSum = 0;
+        double scoreSum = 0;
         int passNum = 0;
         for(Student student : students) {
             for(Map.Entry<String, Double> entry : student.getScores().entrySet()) {
                 if(entry.getKey().equals(courseName)) {
                     scoreSum += entry.getValue();
-                    if(scoreSum >= 60) {
+                    if(entry.getValue() >= 60.0) {
                         passNum++;
                     }
                 }
             }
         }
-        return new CourseStat((double)scoreSum/studentNum, (double)passNum/studentNum);
+        return new CourseStat(scoreSum/studentNum, (double)passNum/studentNum);
     }
 
     public static class CourseStat {

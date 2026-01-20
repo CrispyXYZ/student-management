@@ -1,5 +1,7 @@
 package io.github.crispyxyz.studentmanagement.model;
 
+import io.github.crispyxyz.studentmanagement.util.ValidatingUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ public class Student extends Person implements Detail {
     }
 
     public void setMajor(String major) {
+        ValidatingUtil.validateString(major, "专业");
         this.major = major;
     }
 
@@ -25,6 +28,9 @@ public class Student extends Person implements Detail {
     }
 
     public void setScores(Map<String, Double> scores) {
+        if(scores == null) throw new NullPointerException("分数不能为 null");
+        scores.keySet().forEach(key -> ValidatingUtil.validateString(key, "科目"));
+        scores.values().forEach(value -> ValidatingUtil.validateDouble(value,0.0,100.0, "分数"));
         this.scores = scores;
     }
 

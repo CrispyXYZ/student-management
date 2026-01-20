@@ -1,5 +1,7 @@
 package io.github.crispyxyz.studentmanagement.model;
 
+import io.github.crispyxyz.studentmanagement.util.ValidatingUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,10 @@ public class Teacher extends Person implements Detail {
     }
 
     public void setCourses(List<String> courses) {
+        if(courses == null) {
+            throw new NullPointerException("课程不能为 null");
+        }
+        courses.forEach(str -> ValidatingUtil.validateString(str, "课程"));
         this.courses = courses;
     }
 

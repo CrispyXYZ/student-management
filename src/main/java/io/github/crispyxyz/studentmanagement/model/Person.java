@@ -1,5 +1,7 @@
 package io.github.crispyxyz.studentmanagement.model;
 
+import io.github.crispyxyz.studentmanagement.util.ValidatingUtil;
+
 public abstract class Person {
     private String id;
     private String name;
@@ -16,6 +18,7 @@ public abstract class Person {
     }
 
     public void setId(String id) {
+        ValidatingUtil.validateString(id, "ID");
         this.id = id;
     }
 
@@ -24,6 +27,7 @@ public abstract class Person {
     }
 
     public void setName(String name) {
+        ValidatingUtil.validateString(name, "姓名");
         this.name = name;
     }
 
