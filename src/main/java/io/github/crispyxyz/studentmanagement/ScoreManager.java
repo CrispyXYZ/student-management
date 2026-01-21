@@ -1,6 +1,7 @@
 package io.github.crispyxyz.studentmanagement;
 
 import io.github.crispyxyz.studentmanagement.model.Student;
+import io.github.crispyxyz.studentmanagement.util.ValidatingUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,9 @@ import java.util.Map;
 
 public class ScoreManager {
     public static Map<Student, Integer> getFailedStudents(List<Student> students) {
+        if(students == null) {
+            throw new NullPointerException("学生列表不可为 null");
+        }
         Map<Student, Integer> failedStudents = new HashMap<>();
         for(Student student : students) {
             int count = 0;
@@ -24,6 +28,10 @@ public class ScoreManager {
     }
 
     public static CourseStat getCourseStat(List<Student> students, String courseName) {
+        ValidatingUtil.validateString(courseName, "课程名称");
+        if(students == null) {
+            throw new NullPointerException("学生列表不可为 null");
+        }
         int studentNum = students.size();
         double scoreSum = 0;
         int passNum = 0;

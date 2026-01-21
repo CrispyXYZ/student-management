@@ -1,5 +1,6 @@
 package io.github.crispyxyz.studentmanagement.model;
 
+import io.github.crispyxyz.studentmanagement.exception.InvalidCourseException;
 import io.github.crispyxyz.studentmanagement.util.ValidatingUtil;
 
 import java.util.ArrayList;
@@ -24,13 +25,22 @@ public class Teacher extends Person implements Detail {
         this.courses = courses;
     }
 
+    public void recordScore(String course, Student student, double score) throws InvalidCourseException {
+        if(!courses.contains(course)) {
+            throw new InvalidCourseException("教师" + getName() + "不教授课程" + course + "，无法录入成绩");
+        }
+        ValidatingUtil.validateString(course, "课程");
+        ValidatingUtil.validateDouble(score, 0.0, 100.0, "分数");
+        student.getScores().put(course, score);
+    }
+
     @Override
     public void showDetails() {
         StringBuilder sb = new StringBuilder();
         sb.append("ID: ").append(getId()).append("\n")
-          .append("姓名： ").append(getName()).append("\n")
-          .append("年龄： ").append(getAge()).append("\n")
-          .append("授课课程： ");
+          .append("姓名: ").append(getName()).append("\n")
+          .append("年龄: ").append(getAge()).append("\n")
+          .append("授课课程: ");
         for(String courseName : getCourses()) {
             sb.append("\n- ").append(courseName);
         }

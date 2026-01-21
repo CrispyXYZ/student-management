@@ -63,6 +63,19 @@ public class ScoreManagerTest {
     }
 
     @Test
+    public void testGetCourseStatEmpty() {
+        ScoreManager.CourseStat stat = ScoreManager.getCourseStat(studentList, "军事技能");
+        assertEquals(0, stat.average, 0.001);
+        assertEquals(0, stat.passRate, 0.001);
+    }
+
+    @Test
+    public void testGetCourseStatFailure() {
+        assertThrows(NullPointerException.class, () -> ScoreManager.getCourseStat(studentList, null));
+        assertThrows(NullPointerException.class, () -> ScoreManager.getCourseStat(null, "军事理论"));
+    }
+
+    @Test
     public void testGetFailedStudents() {
         Map<Student, Integer> failedStudents = ScoreManager.getFailedStudents(studentList);
 
@@ -72,5 +85,15 @@ public class ScoreManagerTest {
 
         assertEquals(1, failedStudents.get(student1));
         assertEquals(2, failedStudents.get(student2));
+    }
+
+    @Test
+    public void testGetFailedStudentsEmpty() {
+        assertEquals(0, ScoreManager.getFailedStudents(new ArrayList<>()).size());
+    }
+
+    @Test
+    public void testGetFailedStudentsFailure() {
+        assertThrows(NullPointerException.class, () -> ScoreManager.getFailedStudents(null));
     }
 }

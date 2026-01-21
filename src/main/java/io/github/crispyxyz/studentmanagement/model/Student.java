@@ -39,9 +39,9 @@ public class Student extends Person implements Detail {
         StringBuilder sb = new StringBuilder();
         sb.append("ID: ").append(getId()).append("\n")
           .append("姓名: ").append(getName()).append("\n")
-          .append("年龄：").append(getAge()).append("\n")
-          .append("专业：").append(getMajor()).append("\n")
-          .append("分数：");
+          .append("年龄: ").append(getAge()).append("\n")
+          .append("专业: ").append(getMajor()).append("\n")
+          .append("分数: ");
         for(Map.Entry<String, Double> entry : getScores().entrySet()) {
             sb.append("\n- ").append(entry.getKey()).append(": ").append(entry.getValue());
         }
