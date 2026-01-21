@@ -15,9 +15,11 @@ public class Main {
         List<Student> students = new ArrayList<>();
         List<Teacher> teachers = new ArrayList<>();
 
+        // 创建一个容量为 5 的课程
         Course javaCourse = new Course("CS001", "Java 从入门到入土", 5);
 
         System.out.println("=== 添加学生 ===");
+        // 批量添加 10 名学生
         GenericDataManager.add(students, new Student("001", 24, "甲", "计算机科学与技术"));
         GenericDataManager.add(students, new Student("002", 24, "乙", "计算机科学与技术"));
         GenericDataManager.add(students, new Student("003", 24, "丙", "计算机科学与技术"));
@@ -29,6 +31,7 @@ public class Main {
         GenericDataManager.add(students, new Student("009", 24, "壬", "计算机科学与技术"));
         GenericDataManager.add(students, new Student("010", 24, "癸", "计算机科学与技术"));
 
+        // 为每个学生创建一个选课线程，模拟并发抢课
         List<Thread> threads = new ArrayList<>();
         for(Student student : students) {
             threads.add(new EnrollThread(student, javaCourse));
@@ -39,6 +42,7 @@ public class Main {
             thread.start();
         }
 
+        // 等待 500ms，确保所有线程运行结束
         try {
             Thread.sleep(500);
         } catch(InterruptedException e) {
@@ -46,6 +50,7 @@ public class Main {
             System.exit(1);
         }
 
+        // 输出抢课结果
         System.out.println("抢课成功列表：");
         for(Student student : javaCourse.getStudents()) {
             System.out.println("- " + student.getName());
@@ -61,6 +66,7 @@ public class Main {
         teacher2.getCourses().add("C-- 从入门到精通");
         GenericDataManager.add(teachers, teacher2);
 
+        // 模拟录入成绩
         System.out.println("=== 录入成绩 ===");
         for(Student student : students) {
             try {

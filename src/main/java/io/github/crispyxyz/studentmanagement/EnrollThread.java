@@ -15,6 +15,7 @@ public class EnrollThread extends Thread {
     @Override
     public void run() {
         try {
+            // 注意，此处需要休眠 1ms 以模拟并发条件；否则会按线程创建顺序执行
             Thread.sleep(1);
         } catch(InterruptedException e) {
             System.out.println("线程休眠被中断");
