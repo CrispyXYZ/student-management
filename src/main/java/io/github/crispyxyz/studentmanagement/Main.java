@@ -9,6 +9,7 @@ import io.github.crispyxyz.studentmanagement.model.Teacher;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 public class Main {
     public static void main(String[] args) {
@@ -32,23 +33,27 @@ public class Main {
         GenericDataManager.add(students, new Student("010", 24, "癸", "计算机科学与技术"));
 
         // 为每个学生创建一个选课线程，模拟并发抢课
-        List<Thread> threads = new ArrayList<>();
+        CountDownLatch startLatch = new CountDownLatch(1);
+        CountDownLatch endLatch = new CountDownLatch(students.size());
         for(Student student : students) {
-            threads.add(new EnrollThread(student, javaCourse));
+            new EnrollThread(student, javaCourse, startLatch, endLatch).start();
         }
 
+        // 启动所有线程
+        startLatch.countDown();
+        long startTime = System.nanoTime();
         System.out.println("=== 开始抢课 ===");
-        for(Thread thread : threads) {
-            thread.start();
-        }
 
-        // 等待 500ms，确保所有线程运行结束
+        // 等待所有线程运行结束
         try {
-            Thread.sleep(500);
+            endLatch.await();
         } catch(InterruptedException e) {
             System.out.println("线程休眠被中断");
             System.exit(1);
         }
+        long endTime = System.nanoTime();
+
+        System.out.println("处理抢课用时："+(endTime - startTime)+"ns");
 
         // 输出抢课结果
         System.out.println("抢课成功列表：");
