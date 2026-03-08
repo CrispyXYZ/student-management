@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
     public static void main(String[] args) {
@@ -32,11 +34,12 @@ public class Main {
         GenericDataManager.add(students, new Student("009", 24, "壬", "计算机科学与技术"));
         GenericDataManager.add(students, new Student("010", 24, "癸", "计算机科学与技术"));
 
+        ExecutorService service = Executors.newFixedThreadPool(8);
         // 为每个学生创建一个选课线程，模拟并发抢课
         CountDownLatch startLatch = new CountDownLatch(1);
         CountDownLatch endLatch = new CountDownLatch(students.size());
-        for(Student student : students) {
-            new EnrollThread(student, javaCourse, startLatch, endLatch).start();
+        for (Student student : students) {
+            service.submit(new EnrollRunnable(student, javaCourse, startLatch, endLatch));
         }
 
         // 启动所有线程
@@ -47,13 +50,15 @@ public class Main {
         // 等待所有线程运行结束
         try {
             endLatch.await();
-        } catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             System.out.println("线程休眠被中断");
-            System.exit(1);
+            Thread.currentThread()
+                  .interrupt();
         }
         long endTime = System.nanoTime();
+        System.out.println("处理抢课用时：" + (endTime - startTime) + "ns");
+        service.shutdown();
 
-        System.out.println("处理抢课用时："+(endTime - startTime)+"ns");
 
         // 输出抢课结果
         System.out.println("抢课成功列表：");

@@ -5,13 +5,13 @@ import io.github.crispyxyz.studentmanagement.model.Student;
 
 import java.util.concurrent.CountDownLatch;
 
-public class EnrollThread extends Thread {
+public class EnrollRunnable implements Runnable {
     private final Student student;
     private final Course course;
     private final CountDownLatch startLatch;
     private final CountDownLatch endLatch;
 
-    public EnrollThread(Student student, Course course, CountDownLatch startLatch, CountDownLatch endLatch) {
+    public EnrollRunnable(Student student, Course course, CountDownLatch startLatch, CountDownLatch endLatch) {
         this.student = student;
         this.course = course;
         this.startLatch = startLatch;
